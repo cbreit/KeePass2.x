@@ -227,6 +227,10 @@ namespace KeePass.Util
 				// SprEngine.Compile might have modified the database;
 				// pd.Modified is set by SprEngine
 				mf.UpdateUI(false, null, false, null, false, null, false);
+
+				if(Program.Config.MainWindow.MinimizeAfterAutoType &&
+					mf.IsCommandTypeInvokable(null, MainForm.AppCommandType.Window))
+					UIUtil.SetWindowState(mf, FormWindowState.Minimized);
 			}
 
 			return true;
@@ -426,7 +430,7 @@ namespace KeePass.Util
 
 		internal static bool IsOwnWindow(IntPtr hWindow)
 		{
-			return ((hWindow == Program.MainForm.Handle) ||
+			return ((hWindow == Program.GetSafeMainWindowHandle()) ||
 				GlobalWindowManager.HasWindow(hWindow));
 		}
 

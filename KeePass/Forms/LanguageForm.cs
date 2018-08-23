@@ -135,11 +135,12 @@ namespace KeePass.Forms
 			{
 				KPTranslationProperties p = kvp.Value.Properties;
 				string strName = p.NameEnglish + " (" + p.NameNative + ")";
+				string strVer = PwDefs.GetTranslationDisplayVersion(p.ApplicationVersion);
 				bool bBuiltIn = ((kvp.Key.Length == 0) || (WinUtil.IsAppX &&
 					kvp.Key.StartsWith(strDirASep, StrUtil.CaseIgnoreCmp)));
 
 				ListViewItem lvi = m_lvLanguages.Items.Add(strName, 0);
-				lvi.SubItems.Add(p.ApplicationVersion);
+				lvi.SubItems.Add(strVer);
 				lvi.SubItems.Add(p.AuthorName);
 				lvi.SubItems.Add(p.AuthorContact);
 				lvi.SubItems.Add(bBuiltIn ? KPRes.BuiltInU : kvp.Key);
@@ -148,8 +149,8 @@ namespace KeePass.Forms
 				// try
 				// {
 				//	string nl = MessageService.NewLine;
-				//	lvi.ToolTipText = strName + " " + p.ApplicationVersion + nl +
-				//		p.AuthorName + nl + p.AuthorContact + nl + nl + kvp.Key;
+				//	lvi.ToolTipText = strName + " " + strVer + nl + p.AuthorName +
+				//		nl + p.AuthorContact + nl + nl + kvp.Key;
 				// }
 				// catch(Exception) { Debug.Assert(false); } // Too long?
 
@@ -181,10 +182,7 @@ namespace KeePass.Forms
 								strFilePath, t));
 						else { Debug.Assert(false); }
 					}
-					catch(Exception ex)
-					{
-						MessageService.ShowWarning(ex.Message);
-					}
+					catch(Exception ex) { MessageService.ShowWarning(ex); }
 				}
 			}
 			catch(Exception) { } // Directory might not exist or cause access violation
@@ -270,7 +268,7 @@ namespace KeePass.Forms
 				WinUtil.OpenUrl("cmd://\"" + str + "\"", null, false);
 				this.DialogResult = DialogResult.Cancel;
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex.Message); }
+			catch(Exception ex) { MessageService.ShowWarning(ex); }
 		}
 	}
 }
